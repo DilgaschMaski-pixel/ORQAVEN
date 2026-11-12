@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ORQAVEN — My Account</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f5f5f3;
+      color: #111;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      background: #111;
+      color: white;
+      text-align: center;
+      padding: 28px 15px;
+    }
+    header h1 {
+      letter-spacing: 8px;
+      font-size: 25px;
+      margin: 0;
+    }
+    header a {
+      color: white;
+      text-decoration: none;
+    }
+    main {
+      max-width: 430px;
+      margin: 55px auto;
+      padding: 30px;
+      background: white;
+    }
+    h2 {
+      text-align: center;
+      letter-spacing: 3px;
+      font-size: 19px;
+    }
+    input {
+      width: 100%;
+      padding: 15px;
+      margin-top: 14px;
+      border: 1px solid #ddd;
+      outline: none;
+    }
+    button {
+      width: 100%;
+      padding: 16px;
+      margin-top: 18px;
+      background: #111;
+      color: white;
+      border: 0;
+      cursor: pointer;
+      letter-spacing: 2px;
+    }
+    .switch {
+      text-align: center;
+      font-size: 12px;
+      margin-top: 22px;
+    }
+    .switch button {
+      background: none;
+      color: #111;
+      padding: 5px;
+      text-decoration: underline;
+    }
+    #message {
+      font-size: 13px;
+      line-height: 1.6;
+      text-align: center;
+      margin-top: 18px;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html"><h1>ORQAVEN</h1></a>
+  </header>
+
+  <main>
+    <section id="login">
+      <h2>WELCOME BACK</h2>
+      <form id="loginForm">
+        <input id="loginEmail" type="email"
+          placeholder="Email address" required>
+        <input id="loginPassword" type="password"
+          placeholder="Password" required>
+        <button type="submit">SIGN IN</button>
+      </form>
+      <div class="switch">
+        New to ORQAVEN?
+        <button type="button" onclick="showSignup()">CREATE ACCOUNT</button>
+      </div>
+    </section>
+
+    <section id="signup" class="hidden">
+      <h2>CREATE ACCOUNT</h2>
+      <form id="signupForm">
+        <input id="signupName" type="text"
+          placeholder="Full name" required>
+        <input id="signupEmail" type="email"
+          placeholder="Email address" required>
+        <input id="signupPassword" type="password"
+          placeholder="Password (at least 8 characters)"
+          minlength="8" required>
+        <button type="submit">REGISTER</button>
+      </form>
+      <div class="switch">
+        Already a member?
+        <button type="button" onclick="showLogin()">SIGN IN</button>
+      </div>
+    </section>
+
+    <section id="account" class="hidden">
+      <h2>MY ACCOUNT</h2>
+      <p id="welcome"></p>
+      <button id="logout">SIGN OUT</button>
+    </section>
+
+    <p id="message" role="status"></p>
+  </main>
+
+  <script type="module">
+    import { supabase } from './supabase.js';
+
+    const message = document.getElementById('message');
+
+    function showMessage(text) {
+      message.textContent = text;
+    }
+
+    window.showSignup = () => {
+      document.getElementById('login').classList.add('hidden');
+      document.getElementById('signup').classList.remove('hidden');
+      showMessage('');
+    };
+
+    window.showLogin = () => {
+      document.getElementById('signup').classList.add('hidden');
+      document.getElementById('login').classList.remove('hidden');
+      showMessage('');
+    };
+
+    async function updateAccount() {
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user) {
+        document.getElementById('login').classList.add('hidden');
+        document.getElementById('signup').classList.add('hidden');
+        document.getElementById('account').classList.remove('hidden');
+        document.getElementById('welcome').textContent =
+          'Signed in as ' + user.email;
+      } else {
+        document.getElementById('account').classList.add('hidden');
+        document.getElementById('login').classList.remove('hidden');
+      }
+    }
+
+    document.getElementById('signupForm').addEventListener('submit',
+      async (event) => {
+        event.preventDefault();
+        showMessage('Creating your account...');
+
+        const name = document.getElementById('signupName').value;
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { full_name: name }
+          }
+        });
+
+        if (error) {
+          showMessage(error.message);
+        } else {
+          showMessage(
+            'Registration submitted. Check your email if confirmation is required.'
+          );
+        }
+      }
+    );
+
+    document.getElementById('loginForm').addEventListener('submit',
+      async (event) => {
+        event.preventDefault();
+        showMessage('Signing in...');
+
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) {
+          showMessage(error.message);
+        } else {
+          showMessage('Welcome back!');
+          await updateAccount();
+        }
+      }
+    );
+
+    document.getElementById('logout').addEventListener('click',
+      async () => {
+        const { error } = await supabase.auth.signOut();
+        showMessage(error ? error.message : 'You have signed out.');
+        await updateAccount();
+      }
+    );
+
+    await updateAccount();
+
+    supabase.auth.onAuthStateChange(() => {
+      updateAccount();
+    });
+  </script>
+</body>
+</html>
