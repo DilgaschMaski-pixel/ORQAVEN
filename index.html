@@ -1,0 +1,700 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111111">
+<meta name="description" content="ORQAVEN — A new standard of luxury streetwear.">
+<title>ORQAVEN — Official Store</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --black:#111; --white:#fff; --gray:#858585;
+  --light:#f3f3f1; --border:#e5e5e5;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { background:var(--white); color:var(--black); font-family:'Inter',sans-serif; }
+button,input,select { font:inherit; }
+button,a { -webkit-tap-highlight-color:transparent; }
+a { color:inherit; text-decoration:none; }
+button { border:0; background:none; cursor:pointer; color:inherit; }
+
+.announcement { background:#111; color:white; text-align:center; padding:10px; font-size:10px; letter-spacing:2px; }
+.header { position:sticky; top:0; z-index:20; background:rgba(255,255,255,.97); border-bottom:1px solid var(--border); }
+.header-main { min-height:86px; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; padding:0 5%; }
+.header-actions { display:flex; align-items:center; gap:18px; }
+.header-actions.right { justify-content:flex-end; }
+.icon-button { font-size:19px; position:relative; padding:8px; display:inline-flex; align-items:center; justify-content:center; }
+.logo { font-family:'Montserrat',sans-serif; font-size:clamp(24px,3vw,34px); font-weight:800; letter-spacing:8px; text-align:center; }
+.logo-sub { display:block; font-size:8px; letter-spacing:4px; text-align:center; margin-top:5px; color:#777; }
+.count { position:absolute; top:0; right:-3px; background:#111; color:white; font-size:9px; width:16px; height:16px; display:grid; place-items:center; border-radius:50%; }
+.nav { display:flex; justify-content:center; gap:42px; padding:17px 10px; border-top:1px solid #f0f0f0; }
+.nav a { font-size:10px; font-weight:600; letter-spacing:1.8px; transition:opacity .2s; }
+.nav a:hover { opacity:.5; }
+.menu-toggle { display:none; font-size:23px; }
+
+/* HERO */
+.hero { min-height:690px; position:relative; overflow:hidden; display:grid; grid-template-columns:1fr 1fr; background:#171717; color:white; }
+.hero-model { position:relative; min-height:690px; overflow:hidden; }
+.hero-model img { width:100%; height:100%; min-height:690px; object-fit:cover; object-position:center top; display:block; filter:grayscale(35%) brightness(.75); transition:transform .8s; }
+.hero-model:hover img { transform:scale(1.035); }
+.hero-model::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.05) 35%,rgba(0,0,0,.65) 100%); }
+.hero-center { position:absolute; z-index:3; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; width:90%; max-width:650px; pointer-events:none; }
+.hero-center .eyebrow { font-size:10px; letter-spacing:5px; margin-bottom:25px; }
+.hero-center h1 { font-family:'Montserrat',sans-serif; font-size:clamp(38px,7vw,82px); font-weight:800; letter-spacing:5px; line-height:1; text-shadow:0 4px 25px rgba(0,0,0,.5); }
+.hero-center p { font-size:12px; letter-spacing:3px; margin-top:22px; color:#eee; }
+.hero-center .hero-button { display:inline-block; margin-top:32px; padding:17px 29px; background:white; color:#111; font-size:10px; font-weight:700; letter-spacing:2px; pointer-events:auto; transition:.25s; }
+.hero-center .hero-button:hover { background:#ccc; }
+.model-label { position:absolute; z-index:2; bottom:35px; left:35px; font-size:10px; letter-spacing:3px; color:white; }
+.hero-model.right .model-label { left:auto; right:35px; }
+
+/* GENERAL SECTIONS */
+.section { padding:90px 6%; }
+.section-heading { text-align:center; margin-bottom:42px; }
+.section-heading span { font-size:9px; letter-spacing:4px; color:#888; }
+.section-heading h2 { font-family:'Montserrat',sans-serif; font-size:clamp(25px,4vw,38px); letter-spacing:3px; margin-top:12px; }
+
+/* CATEGORIES */
+.categories { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.category { min-height:420px; position:relative; display:flex; align-items:flex-end; padding:32px; overflow:hidden; transition:filter .25s; }
+.category:hover { filter:brightness(.9); }
+.category.men { background:linear-gradient(145deg,#777,#252525); color:white; }
+.category.women { background:linear-gradient(145deg,#d5d5d5,#777); color:white; }
+.category::before { content:"ORQAVEN"; position:absolute; font-size:clamp(40px,7vw,90px); font-family:'Montserrat',sans-serif; font-weight:800; letter-spacing:8px; opacity:.12; transform:rotate(-90deg); right:-75px; top:40%; pointer-events:none; }
+.category h3 { font-family:'Montserrat',sans-serif; font-size:34px; letter-spacing:4px; margin-bottom:12px; }
+.category a { font-size:10px; letter-spacing:2px; border-bottom:1px solid currentColor; padding-bottom:7px; }
+
+/* COLLECTION */
+.collection { background:#f3f3f1; text-align:center; padding:85px 20px; }
+.collection h2 { font-family:'Montserrat',sans-serif; font-size:clamp(30px,5vw,55px); letter-spacing:5px; margin:16px 0; }
+.collection p { color:#777; font-size:12px; margin-bottom:28px; }
+.dark-button { display:inline-block; background:#111; color:white; padding:17px 28px; font-size:10px; letter-spacing:2px; font-weight:600; }
+
+/* PRODUCTS */
+.products { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; max-width:950px; margin:auto; }
+.product { min-width:0; cursor:pointer; }
+.product-image { background:#f0f0ee; aspect-ratio:3/4; position:relative; overflow:hidden; }
+.product-image img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s; }
+.product:hover .product-image img { transform:scale(1.035); }
+.product-image .wishlist-button { position:absolute; top:14px; right:14px; background:white; border-radius:50%; width:38px; height:38px; font-size:21px; display:grid; place-items:center; z-index:2; }
+.product-info { padding:15px 0; }
+.product-info h3 { font-size:12px; font-weight:600; letter-spacing:1px; }
+.product-info p { color:#888; font-size:11px; margin-top:7px; }
+.product-price { color:#111 !important; font-size:13px !important; font-weight:600; }
+.product-tag { display:inline-block; margin-bottom:8px; color:#888; font-size:9px; letter-spacing:2px; }
+
+/* COMING SOON */
+.coming-soon { text-align:center; padding:85px 20px; background:#111; color:white; }
+.coming-soon span { color:#999; font-size:9px; letter-spacing:4px; }
+.coming-soon h2 { font-family:'Montserrat',sans-serif; font-size:clamp(30px,5vw,55px); letter-spacing:5px; margin:18px 0; }
+.coming-soon p { font-size:12px; color:#aaa; }
+
+/* ABOUT */
+.about { max-width:750px; margin:auto; text-align:center; }
+.about p { font-size:13px; color:#777; line-height:2; margin-top:20px; }
+
+/* NEWSLETTER */
+.newsletter { background:#f3f3f1; text-align:center; padding:75px 20px; }
+.newsletter h2 { font-family:'Montserrat',sans-serif; letter-spacing:3px; font-size:25px; }
+.newsletter p { color:#777; font-size:12px; margin:15px 0 25px; }
+.newsletter-form { display:flex; max-width:430px; margin:auto; border-bottom:1px solid #111; }
+.newsletter-form input { flex:1; min-width:0; padding:14px 5px; border:none; background:transparent; outline:none; font-size:12px; }
+.newsletter-form button { font-size:10px; font-weight:700; letter-spacing:1px; }
+.contact-email { margin-top:25px; font-size:11px; color:#777; }
+.contact-email a { color:#111; text-decoration:underline; text-underline-offset:4px; }
+.newsletter .notice { margin-top:15px; color:#888; font-size:11px; }
+
+/* FOOTER */
+footer { background:#111; color:white; padding:60px 6% 25px; }
+.footer-top { display:grid; grid-template-columns:2fr 1fr 1fr; gap:35px; padding-bottom:45px; }
+.footer-brand h2 { font-family:'Montserrat',sans-serif; letter-spacing:7px; font-size:25px; }
+.footer-brand p { font-size:11px; color:#999; margin-top:15px; }
+.footer-column h3 { font-size:10px; letter-spacing:2px; margin-bottom:18px; }
+.footer-column a { display:block; color:#999; font-size:11px; margin:12px 0; }
+.footer-bottom { border-top:1px solid #333; padding-top:22px; color:#777; font-size:10px; display:flex; justify-content:space-between; gap:15px; flex-wrap:wrap; }
+
+/* DRAWER */
+.overlay { display:none; position:fixed; inset:0; z-index:50; background:rgba(0,0,0,.5); }
+.overlay.active { display:block; }
+.drawer { position:absolute; right:0; top:0; height:100%; width:min(460px,92%); background:white; padding:28px; overflow-y:auto; }
+.drawer-header { display:flex; justify-content:space-between; align-items:center; padding-bottom:25px; border-bottom:1px solid #ddd; }
+.drawer-header h2 { font-size:16px; letter-spacing:2px; }
+.close-button { font-size:25px; }
+.drawer-content { padding:25px 0; color:#777; font-size:12px; line-height:1.8; }
+.search-box { width:100%; padding:15px; margin-top:25px; border:1px solid #ddd; outline:none; }
+.notice { margin-top:15px; color:#888; font-size:11px; }
+.detail-image { width:100%; aspect-ratio:3/4; object-fit:cover; background:#f0f0ee; }
+.detail-name { color:#111; font-size:17px; letter-spacing:1px; margin:18px 0 7px; }
+.detail-price { color:#111; font-size:15px; font-weight:700; margin-bottom:20px; }
+.field-label { display:block; color:#111; font-size:10px; font-weight:700; letter-spacing:1.5px; margin:18px 0 9px; }
+.size-options { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; }
+.size-option { border:1px solid #ddd; padding:11px 2px; font-size:11px; }
+.size-option.selected { background:#111; color:white; border-color:#111; }
+.quantity-control { display:flex; align-items:center; gap:18px; border:1px solid #ddd; width:max-content; padding:8px 12px; color:#111; }
+.quantity-control button { font-size:18px; width:20px; }
+.add-cart-button { width:100%; background:#111; color:white; padding:17px; margin-top:22px; font-size:10px; font-weight:700; letter-spacing:2px; }
+.drawer-item { display:grid; grid-template-columns:75px 1fr; gap:14px; padding:15px 0; border-bottom:1px solid #eee; color:#111; }
+.drawer-item img { width:75px; height:95px; object-fit:cover; background:#eee; }
+.drawer-item h3 { font-size:11px; letter-spacing:.5px; margin-bottom:5px; }
+.drawer-item p { color:#777; font-size:11px; }
+.remove-item { color:#888; text-decoration:underline; font-size:10px; margin-top:7px; }
+.cart-total { display:flex; justify-content:space-between; color:#111; font-weight:700; padding-top:20px; }
+.empty-message { color:#777; }
+.search-result { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid #eee; color:#111; cursor:pointer; }
+.search-result img { width:55px; height:70px; object-fit:cover; }
+
+/* INSTAGRAM POPUP */
+.instagram-popup { position:fixed; z-index:100; display:flex; align-items:center; gap:12px; padding:13px 19px; background:#111; color:white; border:1px solid #444; border-radius:8px; box-shadow:0 8px 30px rgba(0,0,0,.2); opacity:0; pointer-events:none; transition:opacity .5s,transform .5s; }
+.instagram-popup.show { opacity:1; transform:translateY(0); }
+.instagram-popup.top-right { top:25px; right:25px; transform:translateY(-15px); }
+.instagram-popup.bottom-left { bottom:25px; left:25px; transform:translateY(15px); }
+.instagram-icon { width:23px; height:23px; border:2px solid white; border-radius:7px; display:grid; place-items:center; font-size:15px; line-height:1; }
+.instagram-name { font-size:11px; font-weight:700; letter-spacing:2px; }
+
+/* MOBILE */
+@media(max-width:700px) {
+  .header-main { min-height:72px; padding:0 17px; }
+  .menu-toggle { display:block; }
+  .header-actions { gap:7px; }
+  .header-actions .account-action { display:none; }
+  .logo { font-size:21px; letter-spacing:5px; }
+  .logo-sub { font-size:7px; }
+  .nav { display:none; flex-direction:column; gap:0; padding:0; }
+  .nav.open { display:flex; }
+  .nav a { padding:17px 25px; border-top:1px solid #eee; }
+  .hero { min-height:590px; }
+  .hero-model,.hero-model img { min-height:590px; }
+  .hero-model img { object-position:center; }
+  .hero-center { width:95%; }
+  .hero-center h1 { font-size:clamp(29px,7vw,48px); letter-spacing:2px; }
+  .hero-center .eyebrow { font-size:8px; letter-spacing:3px; }
+  .hero-center p { font-size:10px; letter-spacing:1px; }
+  .hero-center .hero-button { padding:14px 19px; font-size:9px; }
+  .model-label { font-size:8px; left:12px; bottom:18px; letter-spacing:2px; }
+  .hero-model.right .model-label { right:12px; }
+  .section { padding:65px 5%; }
+  .categories { gap:10px; }
+  .category { min-height:280px; padding:18px; }
+  .category h3 { font-size:23px; }
+  .products { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+  .footer-top { grid-template-columns:1fr 1fr; }
+  .footer-brand { grid-column:1/-1; }
+  .instagram-popup.top-right { top:15px; right:12px; }
+  .instagram-popup.bottom-left { bottom:15px; left:12px; }
+}
+@media(max-width:380px) {
+  .logo { font-size:17px; letter-spacing:3px; }
+  .header-actions { gap:0; }
+  .category { min-height:230px; }
+  .instagram-popup { padding:11px 14px; }
+  .size-options { grid-template-columns:repeat(3,1fr); }
+}
+</style>
+</head>
+
+<body>
+<div class="announcement">ORQAVEN — THE NEW STANDARD OF STREETWEAR</div>
+
+<header class="header">
+  <div class="header-main">
+    <div class="header-actions">
+      <button class="menu-toggle" onclick="toggleMenu()" aria-label="Open menu">☰</button>
+      <button class="icon-button" onclick="openPanel('search')" aria-label="Search">⌕</button>
+    </div>
+    <a href="index.html" aria-label="ORQAVEN homepage">
+      <div class="logo">ORQAVEN</div>
+      <span class="logo-sub">EST. 2026</span>
+    </a>
+    <div class="header-actions right">
+      <a class="icon-button account-action" href="account.html" aria-label="Account">♙</a>
+      <button class="icon-button" onclick="openPanel('wishlist')" aria-label="Wishlist">♡ <span class="count" id="wishCount">0</span></button>
+      <button class="icon-button" onclick="openPanel('cart')" aria-label="Shopping bag">♧ <span class="count" id="cartCount">0</span></button>
+    </div>
+  </div>
+  <nav class="nav" id="mainNav">
+    <a href="index.html">HOME</a>
+    <a href="#collections">COLLECTIONS</a>
+    <a href="#about">ABOUT</a>
+    <a href="#contact">CONTACT</a>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO: MAN LEFT, WOMAN RIGHT -->
+  <section class="hero">
+    <div class="hero-model left">
+      <img src="https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=1200&q=85" alt="Men's streetwear fashion model">
+      <span class="model-label">ORQAVEN MEN</span>
+    </div>
+    <div class="hero-model right">
+      <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=85" alt="Women's streetwear fashion model">
+      <span class="model-label">ORQAVEN WOMEN</span>
+    </div>
+    <div class="hero-center">
+      <div class="eyebrow">WELCOME TO ORQAVEN</div>
+      <h1>BE<br>DIFFERENT.</h1>
+      <p>YOUR STYLE. YOUR IDENTITY.</p>
+      <a href="#collections" class="hero-button">DISCOVER THE COLLECTION</a>
+    </div>
+  </section>
+
+  <section class="section" id="collections">
+    <div class="section-heading">
+      <span>FIND YOUR STYLE</span>
+      <h2>EXPLORE ORQAVEN</h2>
+    </div>
+    <div class="categories">
+      <div class="category men" id="men">
+        <div><h3>MEN</h3><a href="#products">DISCOVER MORE →</a></div>
+      </div>
+      <div class="category women" id="women">
+        <div><h3>WOMEN</h3><a href="#products">DISCOVER MORE →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="collection">
+    <span class="eyebrow">THE ORQAVEN COLLECTION</span>
+    <h2>BE DIFFERENT.</h2>
+    <p>Individuality is not optional. It is everything.</p>
+    <a href="#products" class="dark-button">EXPLORE THE COLLECTION</a>
+  </section>
+
+  <section class="section" id="products">
+    <div class="section-heading">
+      <span>OUR SELECTION</span>
+      <h2>FEATURED PRODUCTS</h2>
+    </div>
+
+    <div class="products">
+      <article class="product" onclick="openProduct('crown')">
+        <div class="product-image">
+          <img src="assets/0949FFDF-2B76-40F0-ACCB-2B347F255518.jpeg" alt="CROWN OF THORNS TEE">
+          <button class="wishlist-button" onclick="event.stopPropagation();addWishlist('crown')" aria-label="Add Crown of Thorns Tee to wishlist">♡</button>
+        </div>
+        <div class="product-info">
+          <span class="product-tag">MEN / WOMEN</span>
+          <h3>CROWN OF THORNS TEE</h3>
+          <p class="product-price">16,99 €</p>
+        </div>
+      </article>
+
+      <article class="product" onclick="openProduct('disguise')">
+        <div class="product-image">
+          <img src="assets/1F8ACFA8-D726-430E-8F36-91665EA952A8.jpeg" alt="DISGUISE TEE">
+          <button class="wishlist-button" onclick="event.stopPropagation();addWishlist('disguise')" aria-label="Add Disguise Tee to wishlist">♡</button>
+        </div>
+        <div class="product-info">
+          <span class="product-tag">MEN / WOMEN</span>
+          <h3>DISGUISE TEE</h3>
+          <p class="product-price">15,99 €</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="coming-soon">
+    <span>THE NEXT CHAPTER</span>
+    <h2>COMING SOON.</h2>
+    <p>ORQAVEN is just getting started.</p>
+  </section>
+
+  <section class="section" id="about">
+    <div class="about">
+      <div class="section-heading">
+        <span>OUR PHILOSOPHY</span>
+        <h2>ABOUT ORQAVEN</h2>
+      </div>
+      <p>ORQAVEN represents individuality, confidence and modern streetwear. We believe style is more than clothing. It is a statement of who you are.</p>
+      <p>BE DIFFERENT. CREATE YOUR OWN PATH.</p>
+    </div>
+  </section>
+
+  <section class="newsletter" id="contact">
+    <h2>STAY IN THE LOOP</h2>
+    <p>Be among the first to hear about the ORQAVEN launch.</p>
+    <form class="newsletter-form" onsubmit="newsletterSubmit(event)">
+      <input type="email" id="subscriberEmail" placeholder="Your email address" autocomplete="email" required>
+      <button type="submit" id="subscribeButton">SUBSCRIBE →</button>
+    </form>
+    <p id="newsletterMessage" class="notice" aria-live="polite"></p>
+    <p class="contact-email">CONTACT: <a href="mailto:orqavenn@gmail.com">orqavenn@gmail.com</a></p>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <h2>ORQAVEN</h2>
+      <p>BE DIFFERENT. CREATE YOUR OWN PATH.</p>
+    </div>
+    <div class="footer-column">
+      <h3>SHOP</h3>
+      <a href="#men">Men</a>
+      <a href="#women">Women</a>
+      <a href="#collections">Collections</a>
+      <a href="#products">Products</a>
+    </div>
+    <div class="footer-column">
+      <h3>INFORMATION</h3>
+      <a href="#about">About us</a>
+      <a href="#contact">Contact</a>
+      <a href="mailto:orqavenn@gmail.com">orqavenn@gmail.com</a>
+      <a href="#">Shipping information</a>
+      <a href="#">Privacy policy</a>
+      <a href="#">Legal notice</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 ORQAVEN. ALL RIGHTS RESERVED.</span>
+    <span>MADE FOR INDIVIDUALITY.</span>
+  </div>
+</footer>
+
+<div class="overlay" id="panel" onclick="closePanel(event)">
+  <div class="drawer" onclick="event.stopPropagation()">
+    <div class="drawer-header">
+      <h2 id="panelTitle">ORQAVEN</h2>
+      <button class="close-button" onclick="closePanel()" aria-label="Close">×</button>
+    </div>
+    <div class="drawer-content" id="panelContent"></div>
+  </div>
+</div>
+
+<div class="instagram-popup" id="instagramPopup" aria-hidden="true">
+  <span class="instagram-icon">◎</span>
+  <span class="instagram-name">ORQAVEN</span>
+</div>
+
+<script>
+const PRODUCTS = {
+  crown: {
+    id:'crown',
+    name:'CROWN OF THORNS TEE',
+    price:16.99,
+    image:'assets/0949FFDF-2B76-40F0-ACCB-2B347F255518.jpeg',
+    description:'ORQAVEN statement streetwear. Available for MEN and WOMEN.'
+  },
+  disguise: {
+    id:'disguise',
+    name:'DISGUISE TEE',
+    price:15.99,
+    image:'assets/1F8ACFA8-D726-430E-8F36-91665EA952A8.jpeg',
+    description:'ORQAVEN statement streetwear. Available for MEN and WOMEN.'
+  }
+};
+
+const SIZES = ['XS','S','M','L','XL','XXL'];
+let selectedProduct = null;
+let selectedSize = 'M';
+let selectedQuantity = 1;
+
+function loadSaved(key, fallback) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key));
+    return Array.isArray(value) ? value : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+let wishlist = loadSaved('orqaven_wishlist', []);
+let cart = loadSaved('orqaven_cart', []);
+
+function saveData() {
+  try {
+    localStorage.setItem('orqaven_wishlist', JSON.stringify(wishlist));
+    localStorage.setItem('orqaven_cart', JSON.stringify(cart));
+  } catch (error) {
+    console.warn('Could not save ORQAVEN data:', error);
+  }
+}
+
+function updateCounts() {
+  document.getElementById('wishCount').textContent = wishlist.length;
+  document.getElementById('cartCount').textContent =
+    cart.reduce((total, item) => total + item.quantity, 0);
+}
+
+function toggleMenu() {
+  document.getElementById('mainNav').classList.toggle('open');
+}
+
+function openPanel(type) {
+  const panel = document.getElementById('panel');
+  const title = document.getElementById('panelTitle');
+  const content = document.getElementById('panelContent');
+  panel.classList.add('active');
+
+  if (type === 'search') {
+    title.textContent = 'SEARCH';
+    content.innerHTML = `
+      <p>What are you looking for?</p>
+      <input class="search-box" id="searchInput" type="search" placeholder="Search ORQAVEN..." oninput="renderSearch(this.value)">
+      <div id="searchResults"></div>
+    `;
+    renderSearch('');
+  }
+
+  if (type === 'cart') {
+    title.textContent = 'SHOPPING BAG';
+    renderCart();
+  }
+
+  if (type === 'wishlist') {
+    title.textContent = 'WISHLIST';
+    renderWishlist();
+  }
+}
+
+function closePanel(event) {
+  if (event && event.target !== document.getElementById('panel')) return;
+  document.getElementById('panel').classList.remove('active');
+}
+
+function openProduct(id) {
+  const product = PRODUCTS[id];
+  if (!product) return;
+
+  selectedProduct = id;
+  selectedSize = 'M';
+  selectedQuantity = 1;
+
+  document.getElementById('panelTitle').textContent = 'PRODUCT DETAILS';
+  document.getElementById('panelContent').innerHTML = `
+    <img class="detail-image" src="${product.image}" alt="${escapeHTML(product.name)}">
+    <h3 class="detail-name">${escapeHTML(product.name)}</h3>
+    <p class="detail-price">${formatPrice(product.price)}</p>
+    <p>${escapeHTML(product.description)}</p>
+    <span class="field-label">SELECT SIZE</span>
+    <div class="size-options">
+      ${SIZES.map(size => `<button class="size-option ${size === selectedSize ? 'selected' : ''}" onclick="selectSize('${size}',this)">${size}</button>`).join('')}
+    </div>
+    <span class="field-label">QUANTITY</span>
+    <div class="quantity-control">
+      <button onclick="changeQuantity(-1)" aria-label="Decrease quantity">−</button>
+      <span id="selectedQuantity">1</span>
+      <button onclick="changeQuantity(1)" aria-label="Increase quantity">+</button>
+    </div>
+    <button class="add-cart-button" onclick="addToCart()">ADD TO BAG — ${formatPrice(product.price)}</button>
+  `;
+  document.getElementById('panel').classList.add('active');
+}
+
+function selectSize(size, button) {
+  selectedSize = size;
+  document.querySelectorAll('.size-option').forEach(option => option.classList.remove('selected'));
+  button.classList.add('selected');
+}
+
+function changeQuantity(amount) {
+  selectedQuantity = Math.max(1, Math.min(20, selectedQuantity + amount));
+  document.getElementById('selectedQuantity').textContent = selectedQuantity;
+}
+
+function addToCart() {
+  const product = PRODUCTS[selectedProduct];
+  if (!product) return;
+
+  const existing = cart.find(item => item.id === product.id && item.size === selectedSize);
+  if (existing) {
+    existing.quantity = Math.min(20, existing.quantity + selectedQuantity);
+  } else {
+    cart.push({
+      id:product.id,
+      size:selectedSize,
+      quantity:selectedQuantity
+    });
+  }
+
+  saveData();
+  updateCounts();
+  document.getElementById('panelTitle').textContent = 'SHOPPING BAG';
+  renderCart();
+}
+
+function addWishlist(id) {
+  if (!PRODUCTS[id]) return;
+  if (!wishlist.includes(id)) {
+    wishlist.push(id);
+    saveData();
+    updateCounts();
+    alert('Added to your wishlist.');
+  } else {
+    alert('This product is already in your wishlist.');
+  }
+}
+
+function removeWishlist(id) {
+  wishlist = wishlist.filter(item => item !== id);
+  saveData();
+  updateCounts();
+  renderWishlist();
+}
+
+function removeCartItem(index) {
+  cart.splice(index, 1);
+  saveData();
+  updateCounts();
+  renderCart();
+}
+
+function renderCart() {
+  const content = document.getElementById('panelContent');
+
+  if (!cart.length) {
+    content.innerHTML = '<p class="empty-message">Your shopping bag is currently empty.</p><p class="notice">Your selected products will appear here.</p>';
+    return;
+  }
+
+  let total = 0;
+  content.innerHTML = cart.map((item, index) => {
+    const product = PRODUCTS[item.id];
+    if (!product) return '';
+    const lineTotal = product.price * item.quantity;
+    total += lineTotal;
+
+    return `
+      <div class="drawer-item">
+        <img src="${product.image}" alt="${escapeHTML(product.name)}">
+        <div>
+          <h3>${escapeHTML(product.name)}</h3>
+          <p>Size: ${escapeHTML(item.size)}</p>
+          <p>Quantity: ${item.quantity}</p>
+          <p>${formatPrice(lineTotal)}</p>
+          <button class="remove-item" onclick="removeCartItem(${index})">REMOVE</button>
+        </div>
+      </div>
+    `;
+  }).join('') + `
+    <div class="cart-total"><span>SUBTOTAL</span><span>${formatPrice(total)}</span></div>
+    <p class="notice">Shipping costs are not included. Online checkout and payment are not connected yet.</p>
+  `;
+}
+
+function renderWishlist() {
+  const content = document.getElementById('panelContent');
+
+  if (!wishlist.length) {
+    content.innerHTML = '<p class="empty-message">Your wishlist is currently empty.</p>';
+    return;
+  }
+
+  content.innerHTML = wishlist.map(id => {
+    const product = PRODUCTS[id];
+    if (!product) return '';
+    return `
+      <div class="drawer-item">
+        <img src="${product.image}" alt="${escapeHTML(product.name)}">
+        <div>
+          <h3>${escapeHTML(product.name)}</h3>
+          <p>${formatPrice(product.price)}</p>
+          <button class="remove-item" onclick="removeWishlist('${product.id}')">REMOVE</button>
+          <br><button class="remove-item" onclick="openProduct('${product.id}')">VIEW PRODUCT</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderSearch(query) {
+  const results = document.getElementById('searchResults');
+  if (!results) return;
+
+  const matches = Object.values(PRODUCTS).filter(product =>
+    product.name.toLowerCase().includes(query.trim().toLowerCase())
+  );
+
+  results.innerHTML = matches.length
+    ? matches.map(product => `
+      <div class="search-result" onclick="openProduct('${product.id}')">
+        <img src="${product.image}" alt="${escapeHTML(product.name)}">
+        <div><strong>${escapeHTML(product.name)}</strong><p>${formatPrice(product.price)}</p></div>
+      </div>
+    `).join('')
+    : '<p class="notice">No products found.</p>';
+}
+
+function formatPrice(value) {
+  return value.toLocaleString('de-DE', {
+    style:'currency',
+    currency:'EUR'
+  });
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  })[character]);
+}
+
+/*
+  NEWSLETTER SETUP:
+  Add your secure Supabase Edge Function URL after the backend
+  has been created. Do not put a Supabase service-role key in this file.
+*/
+const NEWSLETTER_ENDPOINT = 'DEINE_NEWSLETTER_FUNCTION_URL';
+
+async function newsletterSubmit(event) {
+  event.preventDefault();
+
+  const emailInput = document.getElementById('subscriberEmail');
+  const message = document.getElementById('newsletterMessage');
+  const button = document.getElementById('subscribeButton');
+  const email = emailInput.value.trim();
+
+  if (!NEWSLETTER_ENDPOINT || NEWSLETTER_ENDPOINT === 'DEINE_NEWSLETTER_FUNCTION_URL') {
+    message.textContent = 'Newsletter registration is being set up. Please try again later.';
+    return;
+  }
+
+  button.disabled = true;
+  message.textContent = 'Sending...';
+
+  try {
+    const response = await fetch(NEWSLETTER_ENDPOINT, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email})
+    });
+
+    if (!response.ok) throw new Error('Newsletter registration failed');
+
+    message.textContent = 'Thank you! You are now subscribed.';
+    emailInput.value = '';
+  } catch (error) {
+    message.textContent = 'Registration is currently unavailable. Please try again later.';
+  } finally {
+    button.disabled = false;
+  }
+}
+
+/* ORQAVEN popup */
+function showInstagramPopup() {
+  const popup = document.getElementById('instagramPopup');
+  popup.classList.remove('top-right','bottom-left','show');
+
+  const position = Math.random() > 0.5 ? 'top-right' : 'bottom-left';
+  popup.classList.add(position);
+
+  window.setTimeout(() => popup.classList.add('show'), 100);
+  window.setTimeout(() => popup.classList.remove('show'), 3600);
+}
+
+window.setTimeout(() => {
+  showInstagramPopup();
+  window.setInterval(showInstagramPopup, 18000);
+}, 6000);
+
+updateCounts();
+</script>
+</body>
+</html>
