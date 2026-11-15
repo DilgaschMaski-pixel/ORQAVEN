@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111"><title>ORQAVEN — My Account</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f5f3;color:#111;font-family:Inter,Arial,sans-serif}a{color:inherit;text-decoration:none}header{background:#111;color:#fff;text-align:center;padding:24px}header h1{margin:0;letter-spacing:8px;font-size:24px}header p{font-size:9px;letter-spacing:3px;color:#aaa}main{width:min(760px,calc(100% - 28px));margin:32px auto 60px}.card{background:#fff;padding:clamp(20px,5vw,34px);margin-bottom:16px;border:1px solid #eee}h2{font-size:18px;letter-spacing:2px;margin:0 0 20px}h3{font-size:12px;letter-spacing:1.5px}input{width:100%;padding:15px;margin:12px 0;border:1px solid #ddd;font:inherit}button,.button{display:inline-flex;justify-content:center;padding:15px 18px;background:#111;color:#fff;border:1px solid #111;font-size:10px;font-weight:700;letter-spacing:1.5px;cursor:pointer}.wide{width:100%;margin-top:8px}.switch{text-align:center;font-size:12px;color:#666;margin-top:18px}.switch button{background:none;color:#111;border:0;text-decoration:underline;padding:5px}.hidden{display:none!important}#message{font-size:13px;line-height:1.6;text-align:center;margin-top:16px;color:#555}.topline{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}.muted{color:#777;font-size:12px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}.stat{background:#f5f5f3;padding:20px}.stat strong{display:block;font-size:25px;margin:9px 0}.stat span{font-size:9px;letter-spacing:1.5px;color:#777}.order{border-top:1px solid #e8e8e8;padding:17px 0;display:grid;grid-template-columns:1fr auto;gap:10px}.order strong{font-size:12px}.status{text-align:right;font-size:10px;color:#555}.empty{padding:20px 0;color:#777;font-size:13px}.links{display:flex;gap:15px;margin-top:20px;font-size:10px;text-decoration:underline;text-underline-offset:4px}@media(max-width:480px){.stat{padding:14px}.stat strong{font-size:21px}}
+</style></head><body>
+<header><a href="index.html"><h1>ORQAVEN</h1></a><p>EST. 2026 · BE DIFFERENT.</p></header>
+<main>
+<section class="card" id="authCard">
+<div id="login"><h2>WELCOME BACK</h2><form id="loginForm"><input id="loginEmail" type="email" placeholder="E-Mail-Adresse" autocomplete="email" required><input id="loginPassword" type="password" placeholder="Passwort" autocomplete="current-password" required><button class="wide" id="loginButton">ANMELDEN</button></form><div class="switch">Neu bei ORQAVEN? <button type="button" id="showSignup">KONTO ERSTELLEN</button></div></div>
+<div id="signup" class="hidden"><h2>CREATE ACCOUNT</h2><form id="signupForm"><input id="signupName" placeholder="Vollständiger Name" autocomplete="name" required><input id="signupEmail" type="email" placeholder="E-Mail-Adresse" autocomplete="email" required><input id="signupPassword" type="password" placeholder="Passwort (mindestens 8 Zeichen)" minlength="8" autocomplete="new-password" required><button class="wide" id="signupButton">KONTO ERSTELLEN</button></form><div class="switch">Schon Mitglied? <button type="button" id="showLogin">ANMELDEN</button></div></div>
+<p id="message" role="status" aria-live="polite"></p></section>
+<section id="account" class="hidden">
+<div class="card"><div class="topline"><div><h2>MY ACCOUNT</h2><p class="muted" id="welcome"></p></div><button id="logoutButton" type="button">ABMELDEN</button></div><div class="stats"><div class="stat"><span>BESTELLUNGEN</span><strong id="orderCount">0</strong><span>GESAMT</span></div><div class="stat"><span>INSGESAMT AUSGEGEBEN</span><strong id="totalSpent">0,00 €</strong><span>ERFASSTE BESTELLUNGEN</span></div></div><div class="links"><a href="index.html">WEITER SHOPPEN</a></div></div>
+<div class="card"><h2>ORDER HISTORY</h2><div id="orders"><p class="empty">Deine Bestellungen erscheinen hier, sobald der Shop-Bestellvorgang angeschlossen ist.</p></div></div>
+<div class="card"><h3>ACCOUNT INFORMATION</h3><p class="muted" id="accountEmail"></p><p class="muted">Deine Bestelldaten sind nur für dein angemeldetes Konto sichtbar.</p></div></section>
+<p style="text-align:center;margin:22px"><a class="muted" href="index.html">← ZURÜCK ZUM SHOP</a></p></main>
+<script type="module">
+import {supabase} from './supabase.js';
+const $=id=>document.getElementById(id),say=t=>$('message').textContent=t||'';
+const money=v=>Number(v||0).toLocaleString('de-DE',{style:'currency',currency:'EUR'});
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+$('showSignup').onclick=()=>{$('login').classList.add('hidden');$('signup').classList.remove('hidden');say('')};
+$('showLogin').onclick=()=>{$('signup').classList.add('hidden');$('login').classList.remove('hidden');say('')};
+async function loadOrders(user){
+ $('orders').innerHTML='<p class="empty">Bestellungen werden geladen …</p>';
+ const {data,error}=await supabase.from('orders').select('id,order_number,status,total,created_at').eq('user_id',user.id).order('created_at',{ascending:false});
+ if(error){$('orderCount').textContent='—';$('totalSpent').textContent='—';$('orders').innerHTML='<p class="empty">Bestellübersicht noch nicht eingerichtet. Bitte zuerst das mitgelieferte SQL ausführen. ('+esc(error.message)+')</p>';return}
+ const rows=data||[];$('orderCount').textContent=rows.length;
+ $('totalSpent').textContent=money(rows.filter(o=>!['cancelled','refunded'].includes(String(o.status).toLowerCase())).reduce((s,o)=>s+Number(o.total||0),0));
+ $('orders').innerHTML=rows.length?rows.map(o=>`<div class="order"><div><strong>${esc(o.order_number||String(o.id).slice(0,8).toUpperCase())}</strong><p class="muted">${o.created_at?new Date(o.created_at).toLocaleDateString('de-DE'):'—'}</p></div><div class="status">${esc(o.status||'processing')}<br><strong>${money(o.total)}</strong></div></div>`).join(''):'<p class="empty">Noch keine Bestellungen. Deine Shop-Bestellungen erscheinen hier.</p>';
+}
+async function render(){
+ const {data:{user},error}=await supabase.auth.getUser();if(error){say(error.message);return}
+ if(!user){$('account').classList.add('hidden');$('authCard').classList.remove('hidden');return}
+ $('authCard').classList.add('hidden');$('account').classList.remove('hidden');$('welcome').textContent='Angemeldet als '+user.email;$('accountEmail').textContent='E-Mail: '+user.email;await loadOrders(user);
+}
+$('signupForm').addEventListener('submit',async e=>{e.preventDefault();const b=$('signupButton');b.disabled=true;say('Konto wird erstellt …');const {data,error}=await supabase.auth.signUp({email:$('signupEmail').value.trim(),password:$('signupPassword').value,options:{data:{full_name:$('signupName').value.trim()}}});b.disabled=false;if(error){say(error.message);return}if(data.session){say('Konto erstellt. Du bist angemeldet.');await render()}else say('Registrierung gesendet. Prüfe in Supabase, ob Confirm email ausgeschaltet ist.')});
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=$('loginButton');b.disabled=true;say('Anmeldung läuft …');const {error}=await supabase.auth.signInWithPassword({email:$('loginEmail').value.trim(),password:$('loginPassword').value});b.disabled=false;if(error){say(error.message);return}say('Willkommen zurück.');await render()});
+$('logoutButton').onclick=async()=>{const {error}=await supabase.auth.signOut();if(error){say(error.message);return}say('Du wurdest abgemeldet.');await render()};
+await render();
+supabase.auth.onAuthStateChange((_event,session)=>{if(!session){$('account').classList.add('hidden');$('authCard').classList.remove('hidden')}else render()});
+</script></body></html>
